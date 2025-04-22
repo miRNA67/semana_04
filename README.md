@@ -1,12 +1,39 @@
-# Tema 18: Obtención, calidad y limpieza de lecturas
+# Semana 04: Basecalling de los datos de secuenciación - Visualización de la calidad y limpieza de los archivos FASTQ
+
+## Logro de la sesión: Al finalizar la sesión, el estudiante realiza el basecalling de los archivos FAST5 y la limpieza de los archivos FASTQ con diferentes herramientas bioinformáticas.
 
 ## Estructura de la práctica:
 
-1. Instalación de programas
-2. Obtención de los datos de secuenciación 
-3. Análisis de calidad de datos de secuenciación Illumina
-4. Basecalling de datos de secuenciación Nanopore
-5. Análisis de calidad de datos de secuenciación Nanopore
+1.  Acceso al servidor de cómputo
+2.	Análisis de calidad de archivos FASTQ de Illumina
+3.	Limpieza de los archivos FASTQ de Illumina
+4.	Basecalling de los archivos POD5 y FAST5
+5.	Análisis de calidad de archivos FASTQ de Nanopore
+6.	Limpieza de los archivos FASTQ de Nanopore
+
+## Programas requeridos:
+
+Programas de acceso al servidor:
+
+putty			  v0.79		  https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html 
+winscp			v6.1		  https://winscp.net/eng/download.php 
+
+Programas bioinformáticos:
+
+fastqc			  v0.12.1	  http://www.bioinformatics.babraham.ac.uk/projects/fastqc/  
+guppy			    v6.5.7		https://community.nanoporetech.com/downloads/ 
+nanofilt		  v2.8.0		https://github.com/wdecoster/nanofilt 
+nanoplot		  v1.41.6	  https://github.com/wdecoster/NanoPlot
+pycoqc			  v2.5.2		https://github.com/a-slide/pycoQC 
+porechop		  v0.2.4		https://github.com/rrwick/Porechop 
+trimgalore	  v0.6.10	  https://github.com/FelixKrueger/TrimGalore 
+trimmomatic	  v0.39		  http://www.usadellab.org/cms/?page=trimmomatic 
+
+
+
+
+
+<img width="213" alt="image" src="https://github.com/user-attachments/assets/93dad303-9089-4f50-a654-92bcd5d0ff99" />
 
 ## Metodología:
 
