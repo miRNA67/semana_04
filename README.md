@@ -65,7 +65,7 @@ Trimmomatic v0.39 http://www.usadellab.org/cms/?page=trimmomatic
 
 
 
-Abrir el programa WinSCP, colocar el hostname ( 10.142.250.66 ) y port ( 22 ), escribir su usuario y contraseña correspondiente para tener acceso al servidor de cómputo Tensor, y hacer clic en Login:
+### Abrir el programa WinSCP, colocar el hostname ( 10.142.250.66 ) y port ( 22 ), escribir su usuario y contraseña correspondiente para tener acceso al servidor de cómputo Tensor, y hacer clic en Login:
 
 <img width="500" alt="image" src="https://github.com/user-attachments/assets/ef4dc253-ce4a-417d-b761-39692d2a011a" />
 
@@ -94,14 +94,16 @@ conda activate quality
 fastqc -t 8 /data/2025_1/database/illumina/CAT_R1.fastq.gz -o .
 ```
 
-```bash
-Repetir lo mismo para la biblioteca CAT_R2.fastq.gz
-```
-
 > **Comentario:** 
 > - `-t 2`: Esta opción especifica el número de hilos (threads) que FastQC debe utilizar. Al usar múltiples hilos, el programa puede procesar los datos más rápidamente. En este caso, se están usando 2 hilos.
 > - `/data/2024_2/genome/illumina/CAT_R1.fastq.gz`: Esta parte del comando indica la ubicación del archivo que FastQC debe analizar.
 > - `-o .`: Esta opción define el directorio de salida. El punto "." representa el directorio actual. Esto significa que los informes HTML generados por FastQC se guardarán en el mismo directorio donde se ejecuta el comando.
+
+```bash
+Repetir lo mismo para la biblioteca CAT_R2.fastq.gz
+```
+
+
 
 ```bash
 multiqc -o raw_illumina .
