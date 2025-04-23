@@ -58,9 +58,11 @@ Abrir el programa PuTTY, colocar el hostname ( 10.142.250.66 ) y port ( 22 ), y 
 <img width="500" alt="image" src="https://github.com/user-attachments/assets/92f89dbb-1a21-411d-adb5-38fe486a5567" />
 
 
+
 En la terminal abierta, escribir su usuario y contraseña correspondiente para tener acceso al servidor de cómputo Tensor:
  
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/4d246e93-c59c-4749-a2dd-03db25c53654" />
+
 
 
 Abrir el programa WinSCP, colocar el hostname ( 10.142.250.66 ) y port ( 22 ), escribir su usuario y contraseña correspondiente para tener acceso al servidor de cómputo Tensor, y hacer clic en Login:
@@ -73,7 +75,6 @@ Abrir el programa WinSCP, colocar el hostname ( 10.142.250.66 ) y port ( 22 ), e
 ## 2. Análisis de calidad de archivos FASTQ de Illumina
 
 ```bash
-
 cd
 
 mkdir genomics
@@ -93,10 +94,13 @@ conda activate quality
 fastqc -t 8 /data/2025_1/database/illumina/CAT_R1.fastq.gz -o .
 ```
 
+```bash
+Repetir lo mismo para la biblioteca CAT_R2.fastq.gz
+```
+
 > **Comentario:** 
 > - `-t 2`: Esta opción especifica el número de hilos (threads) que FastQC debe utilizar. Al usar múltiples hilos, el programa puede procesar los datos más rápidamente. En este caso, se están usando 2 hilos.
-> - `/data/2024_2/genome/illumina/*.fastq.gz`: Esta parte del comando indica la ubicación de los archivos que FastQC debe analizar.
-> - `*.fastq.gz`: Es un comodín que selecciona todos los archivos en ese directorio que terminan con ".fastq.gz". Esto significa que FastQC analizará todos los archivos FASTQ comprimidos en ese directorio. Los archivos fastq.gz son el formato de archivos donde se guardan las lecturas de las secuencias de ADN.
+> - `/data/2024_2/genome/illumina/CAT_R1.fastq.gz`: Esta parte del comando indica la ubicación del archivo que FastQC debe analizar.
 > - `-o .`: Esta opción define el directorio de salida. El punto "." representa el directorio actual. Esto significa que los informes HTML generados por FastQC se guardarán en el mismo directorio donde se ejecuta el comando.
 
 ```bash
