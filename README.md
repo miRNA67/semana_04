@@ -91,7 +91,7 @@ cd illumina
 
 conda activate quality
 
-fastqc -t 8 /data/2025_1/database/illumina/CAT_R1.fastq.gz -o .
+fastqc -t 2 /data/2025_1/database/illumina/CAT_R1.fastq.gz -o .
 ```
 
 > **Comentario:** 
@@ -102,8 +102,6 @@ fastqc -t 8 /data/2025_1/database/illumina/CAT_R1.fastq.gz -o .
 ```bash
 Repetir lo mismo para la biblioteca CAT_R2.fastq.gz
 ```
-
-
 
 ```bash
 multiqc -o raw_illumina .
@@ -131,7 +129,7 @@ mkdir trim_galore
 
 cd trim_galore
 
-trim_galore --quality 30 --length 50 --phred33 --cores 2 --fastqc --paired /home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz /home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz
+trim_galore --quality 30 --length 50 --phred33 --cores 2 --fastqc --paired /data/2025_1/database/illumina/CAT_R1.fastq.gz /data/2025_1/database/illumina/CAT_R2.fastq.gz
 ```
 
 > **Comentario:**
@@ -141,8 +139,8 @@ trim_galore --quality 30 --length 50 --phred33 --cores 2 --fastqc --paired /home
 > - `--cores 2`: Esta opción especifica el número de núcleos de procesamiento que Trim Galore! debe utilizar. En este caso, se están utilizando 2 núcleos para acelerar el procesamiento.
 > - `--fastqc`: Esta opción le indica a Trim Galore! que ejecute FastQC automáticamente después del recorte para generar informes de control de calidad de los datos recortados.
 > - `-paired`: Esta opción indica que los datos son pareados (paired-end), lo que significa que las lecturas vienen en pares (R1 y R2).
-> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R1 (la primera lectura del par).
-> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R2 (la segunda lectura del par).
+> - `/data/2025_1/database/illumina/CAT_R1.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R1 (la primera lectura del par).
+> - `/data/2025_1/database/illumina/CAT_R2.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R2 (la segunda lectura del par).
 
 ```bash
 multiqc -o trimming_trim_galore .
@@ -178,13 +176,13 @@ CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
 ```
 
 ```bash
-trimmomatic PE /home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz /home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz T4_R1.trim.fastq.gz T4_R1.unpaired.fastq.gz T4_R2.trim.fastq.gz T4_R2.unpaired.fastq.gz ILLUMINACLIP:NexteraPE.fa:2:30:10 SLIDINGWINDOW:4:30 MINLEN:50 -threads 2
+trimmomatic PE /data/2025_1/database/illumina/CAT_R1.fastq.gz /data/2025_1/database/illumina/CAT_R2.fastq.gz CAT_R1.trim.fastq.gz CAT_R1.unpaired.fastq.gz CAT_R2.trim.fastq.gz CAT_R2.unpaired.fastq.gz ILLUMINACLIP:NexteraPE.fa:2:30:10 SLIDINGWINDOW:4:30 MINLEN:50 -threads 2
 ```
 
 > **Comentario:**
 > - `PE`: Indica que los datos son pareados (paired-end).
-> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R1 (la primera lectura del par).
-> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R2 (la segunda lectura del par).
+> - `/data/2025_1/database/illumina/CAT_R1.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R1 (la primera lectura del par).
+> - `/data/2025_1/database/illumina/CAT_R2.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R2 (la segunda lectura del par).
 > - `T4_R1.trim.fastq.gz`: Archivo de salida para las lecturas R1 recortadas y emparejadas.
 > - `T4_R1.unpaired.fastq.gz`: Archivo de salida para las lecturas R1 que quedaron sin par después del recorte.
 > - `T4_R2.trim.fastq.gz`: Archivo de salida para las lecturas R2 recortadas y emparejadas.
@@ -198,108 +196,6 @@ fastqc -t 2 *.trim.fastq.gz -o .
 
 multiqc -o trimming_trimmomatic .
 ```
- 
-
-
-
-### Instalación de guppy
-
-Guppy es un programa de basecalling y análisis de datos de secuenciación de nanoporos desarrollado por Oxford Nanopore Technologies.
-
-```bash
-cd
-
-mkdir genomics
-
-cd genomics
-
-mkdir software
-
-cd software
-
-pip install gdown
-
-gdown https://drive.google.com/uc?id=1eGGqEJUsHj5rzc5S4LGDvhj0ov6lsr-3
-
-sudo dpkg -i ont_guppy_cpu_6.5.7-1~focal_amd64.deb 
-
-guppy_basecaller -h
-```
-
-### Instalacion de dorado
-
-Dorado es un programa de basecalling y análisis de datos de secuenciación de nanoporos desarrollado por Oxford Nanopore Technologies.
-
-```bash
-cd ~/genomics/software
-
-wget https://cdn.oxfordnanoportal.com/software/analysis/dorado-0.9.1-linux-x64.tar.gz
-
-tar xvfz dorado-0.9.1-linux-x64.tar.gz
-
-cd dorado-0.9.1-linux-x64
-
-cd bin
-
-sudo ln -s /home/ins_user/genomics/software/dorado-0.9.1-linux-x64/bin/dorado /usr/local/bin/dorado
-
-dorado --help
-```
-
-### Instalación de POD5
-
-Permite convertir fast5 a pod5 antes del basecalling
-
-```bash
-pip install pod5 
-```
-
-> **Comentario:** POD5 es un formato de archivo desarrollado por Oxford Nanopore Technologies para almacenar datos de secuenciación de nanoporos. Es un formato más eficiente y comprimido que FAST5
-
-### Instalar los siguientes programas en un ambiente de conda
-
-```bash
-conda create -n quality -c bioconda fastqc nanofilt nanoplot multiqc porechop trim-galore trimmomatic seqkit samtools bedtools
-```
-
-> **Comentario:** 
-> - `conda create`: Este es el comando base para crear un nuevo entorno virtual con conda.
-> - `-n quality`: Esta opción especifica el nombre del nuevo entorno virtual, que será "quality". Los entornos virtuales permiten tener diferentes versiones de software instaladas sin que interfieran entre sí.
-> - `-c bioconda`: Esta opción le dice a conda que busque los paquetes a instalar en el canal "bioconda". Bioconda es un canal de conda especializado en software bioinformático, lo que garantiza que las herramientas estén optimizadas para análisis de datos biológicos.
-> - `fastqc`: Instala FastQC, una herramienta para el control de calidad de datos de secuenciación de alto rendimiento (NGS).
-> - `nanofilt`: Instala NanoFilt, una herramienta para filtrar datos de secuenciación de Oxford Nanopore Technologies (ONT) basándose en la longitud y la calidad de las lecturas.
-> - `nanoplot`: Instala NanoPlot, una herramienta para visualizar datos de secuenciación de ONT.
-> - `multiqc`: Instala MultiQC, una herramienta que agrega los resultados de múltiples herramientas de control de calidad en un único informe HTML.
-> - `porechop`: Instala Porechop, una herramienta para recortar adaptadores y detectar lecturas de concatenación en datos de secuenciación de ONT.
-> - `trim-galore`: Instala Trim Galore!, un envoltorio (wrapper) que combina Cutadapt y FastQC para recortar adaptadores y realizar control de calidad en datos de secuenciación de alto rendimiento (NGS).
-> - `trimmomatic`: Instala Trimmomatic, otra herramienta popular para recortar adaptadores y realizar control de calidad en datos de secuenciación de alto rendimiento (NGS).
-> - `seqkit`: Instala seqkit, una caja de herramientas rápida y multiplataforma para manipular archivos de secuencia FASTA/Q.
-> - `samtools`: Instala samtools, una suite de herramientas para manipular archivos SAM/BAM (formatos para almacenar datos de alineamiento de secuencias).
-> - `bedtools`: Instala bedtools, una suite de utilidades para realizar operaciones con archivos BED (formatos para definir regiones genómicas).
-
-## 2. Obtención de los datos de secuenciación 
-
-```bash
-cd ~/genomics
-
-mkdir raw_data
-
-cd raw_data
-
-### Datos de Illumina
-
-gdown https://drive.google.com/uc?id=1hpoWBRzA2OzWbtxtvwqM-3qnauhM1ulk
-
-gdown https://drive.google.com/uc?id=1GUHeRwpfelPAmU5b6dPoiT79iQ-QQYMP
-
-### Datos de Nanopore
-
-gdown https://drive.google.com/uc?id=1FyGJAS33tB-DkbAiL2195ACaWf_qIi3Z
-
-unzip fast5.zip 
-```
-
-
 
 ## 4. Basecalling de datos de secuenciación Nanopore
 
