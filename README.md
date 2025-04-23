@@ -26,12 +26,18 @@ WinSCP v6.1 https://winscp.net/eng/download.php
 
 ### Programas bioinformáticos:
 
+Dorado v0.9.1 https://github.com/nanoporetech/dorado
+   - **Descripción:** Dorado es una herramienta de Oxford Nanopore Technologies, sucesora de Guppy, para la llamada de bases (basecalling) de las señales eléctricas generadas por sus secuenciadores de ADN. Al igual que Guppy, también incluye funcionalidades para el multiplexado y el filtrado de reads, pero con mejoras en rendimiento y precisión.
+   - 
 FastQC v0.12.1 http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
    - **Descripción:** FastQC es una herramienta de control de calidad para datos de secuenciación de alto rendimiento. Proporciona un informe detallado que ayuda a identificar posibles problemas en los datos brutos antes del análisis posterior.
 
 Guppy v6.5.7 https://community.nanoporetech.com/downloads/
    - **Descripción:** Guppy es un software desarrollado por Oxford Nanopore Technologies para la llamada de bases (basecalling) de las señales eléctricas generadas por sus secuenciadores de ADN. También incluye funcionalidades para el multiplexado y el filtrado de reads.
 
+MultiQC v1.28.0 https://multiqc.info
+   - **Descripción:** MultiQC es una herramienta que agrega informes de control de calidad de múltiples herramientas de análisis bioinformático en un único informe HTML interactivo. Es compatible con una amplia gama de herramientas, incluyendo FastQC, NanoPlot, PycoQC y Trim Galore!, facilitando la revisión y comparación de los resultados de control de calidad de múltiples muestras.
+   - 
 Nanofilt v2.8.0 https://github.com/wdecoster/nanofilt
    - **Descripción:** NanoFilt es una herramienta para filtrar datos de secuenciación de Nanopore basándose en la calidad y la longitud de los reads. Permite seleccionar reads de alta calidad para análisis posteriores.
 
