@@ -208,25 +208,41 @@ mkdir basecalling
 
 cd basecalling
 
-guppy_basecaller -i /home/ins_user/genomics/raw_data/fast5 -s fast5 -c dna_r10.4_e8.1_fast.cfg
+guppy_basecaller -i /data/2025_1/database/nanopore/fast5 -s fast5_db_sup -c dna_r10.4_e8.1_sup.cfg -x 'cuda:0'
 ```
 
 > **Comentario:** 
-> - `-i /home/ins_user/genomics/raw_data/fast5`: Esta opción especifica el directorio de entrada donde se encuentran los archivos de datos de secuenciación crudos (en formato FAST5). Guppy leerá todos los archivos FAST5 dentro de este directorio.
-> - `-s fast5`: Esta opción especifica el directorio de salida donde se escribirán los datos convertidos. La bandera -s significa "ruta de guardado" (save path). Guppy creará un nuevo directorio llamado "fast5" dentro del directorio de trabajo actual y almacenará los archivos de salida allí.
-> - `-c dna_r10.4_e8.1_fast.cfg`: Esta opción especifica el archivo de configuración que se utilizará para el "basecalling". El archivo dna_r10.4_e8.1_fast.cfg contiene ajustes optimizados para la celda de flujo R10.4 y el modelo de "basecalling" "fast" (rápido). Este modelo prioriza la velocidad sobre la máxima precisión.
+> - `-i /data/2025_1/database/nanopore/fast5`: Esta opción especifica el directorio de entrada donde se encuentran los archivos de datos de secuenciación crudos (en formato FAST5). Guppy leerá todos los archivos FAST5 dentro de este directorio.
+> - `-s fast5_db_sup`: Esto define el directorio de salida donde se guardarán los datos después del basecalling. En este caso, se creará un directorio llamado fast5_db_sup en tu directorio de trabajo actual para almacenar los archivos de salida (típicamente archivos FASTQ).
+> - `-c dna_r10.4_e8.1_fast.cfg`: Esta opción especifica el archivo de configuración que se utilizará para el "basecalling". El archivo dna_r10.4_e8.1_sup.cfg contiene ajustes optimizados para la celda de flujo R10.4 y el modelo de "basecalling" "sup" . Este modelo es conocido por su mayor exactitud en la identificación de las bases.
+> - `-x 'cuda:0'`: Esta opción habilita la aceleración por GPU para el proceso de basecalling, lo que puede acelerar significativamente la computación. 'cuda:0' especifica que deseas utilizar la primera GPU habilitada para CUDA (índice 0) disponible en tu sistema.
+
+```bash
+ls
+
+fail  guppy_basecaller_log-2025-04-22_21-21-01.log  pass  sequencing_summary.txt  sequencing_telemetry.js
+```
+
+```bash
+head -n 5 pass/fastq_runid_bcf4b7732185c1a3353d1b4fe80266cd3ac60162_0_0.fastq
+
+@a2662a87-b1ee-4491-a847-763bcf84bb77 runid=bcf4b7732185c1a3353d1b4fe80266cd3ac60162 sampleid=no_sample read=7221 ch=100 start_time=2024-04-28T00:01:51Z model_version_id=2021-11-17_dna_r10.4_minion_promethion_1024_67af0493
+TTATGTTCATTCTACTTGGTTCAGTTACGTATTGCTAAGGTTAAAACAAGTCTGTTGGGACCCATAGACAGCACCTGTTTGGTTCACTACGCTATCGAGACAATCTCTAATTGTGTTTTGATCATTATAAACCGGAATAGCTACAGTAAATATCATCTTTTTTCTCCTTAATTATTGTTTCCTATATAAAAACAAGTCCAGAATTATTCGAATCCAATTTTAAAAGTTACCATAATTTCTTTCTTTATAAATATGGGTTAAAAATTTTAATGTGTTTTTAAACCTAGCCACCGTAATCTAGATAATAAGATGGAATATTCCAGTAATTAAATTGGATTTTCCATAAGATCCCTAACAAATGCTTTGATTCATTTCTCTTTGAATTTGGAAAGCTCGCTTCATTTAATCCTAATTACGATACTTTGCGGATTTTTAATTTACCCATAAAAAAACACCTCTAAGTCGTTTTCAGGTATGATACCTGCTTTTCAACTTAAAGGTGCTTCTCCTCACTACAGGCCCAGACTCTCAAAAACTTCAACTTTTTATAACTTACTCTTTTCCGGCAGCGGCTTCCGCCTGTCCGTCTTTTAATTGATCATTGATTCTGGCGTCTTTCAAATACTCAGTCTTGAATCCGCTCTTCAGCGCCCACGCATAGAAGGCAAGGGCAACGATTGCGATCAGCCCCATATCCCAGCCGTACGGAATGATGTTCAGACCGCCGAATTTTCACTTTCCGAGCCATGAAATGACCATCATGCTGAGCAGATAGACAACCATCCAGACGCCGCCTTTAAAGTTTCTGCGGAATCCTTTCCACTTCGCTTTCGCTTGGTAGTAGAAATAAATCGGCAGGCCGATCAAAATGATAAACAGCACCTGCCCTGTTAACGGCCAGCGCGCCCAATACAGCACGAGAGACGCGAATACGAAGCCGAGCGGTGCAACCACGCTGAGGCCTTTCAGACGGAGAGGCCGGTACAAATCCGCCGCCGTCCGCCGCAGCGTCATCACCGTCACGGGTACCAGTAATAAGAAATCAGCGTCGCAACGGAAATGACTTCAGCAAGCACGCCCCATCCTCTGAATAAAAACAGAAAGATAAACGATACGATCAGGTTGAAAATCATCGCTTGGCGCGGCACGCCGTACAGCGGATGAAGCTTTCCGAAAATGCTCGGCATATATTTATTTTTTTCCATGCCGTAAATCATGCGTGACGTCGTAGCGGTATAAGTGATACCCGTTCCTGACGGAGAAACGAACGCGTCCGCATAAAGAATAATGACAAGCCAGTTGATATTCAATGCGATCGCCAAATCGGCAAATGGAGAGTTGAAGTTCAGGTGACTCCAGCCGTGAACGATCATGGAAGGTTCAACCGCACCGATAAATGCGATTTGCAATAGGACGTAAATGACGGTTGCGACCAGCAGCGAACCGACAACCGCAATCGGAATCGATTTGCCGGGATTTTTTGCTTCTCCGGCCATGTTAATGGTTTGAAACCCGTTAAACGCAAATACGATACCCCGATGTAGCCACCACCGT
++
+#$$%%&&&&''()*-.2(((()0/..*)%%%&&')*++++,-66:;;-,,,/2))(&'()-//./88889ACDDCEFFHHFHHFHEDCBC00000D@@ABCKL{MJMJJKR{NLMONKJJN{NIK{JK;;:98:::EIIOMHGKJMO{PMLQ{SKJLMKDJFQIEBCBHK{KLKKQJKKJOM{LHMKFIIHQTJJK{LJGEIIJJMJGB>@@@BIIEDDHB>><11--((.344@AAC===<0573*=HNJHGNGHGGJFEFDE>8>=?EFGJIGJJJJHFJGCBACBGGGGGHKI{DEC43333475333467::=?A)**))*3<LLJOMOMHHKILNDTEDHHNQQNGEB?@?AHJH{>>>>>FNEBAAAD@PJFMJ@FIHHKMMRLPPGHE0////>===HHMHFGHJOMLHGGEFGHIMIR{LGDEIMK@@>?E>=?3/1777BFGLJDB@87A==?JKEEDEGCBAABIGLGKGKMJN{NKMNPHCBCCCII{MI60..,/0016))***.....===?AA?@==>>?VJ{ROFIHPJLLHHGGL=DIFFFGFIMEBDAC@9<<;::::9;;?CEEGDD;;@99:?:DDBECE;9983111*+(&&%%%%%)%&+9:HEGEC>>?@IKFKJ{MMKKJIKGBB?=6/,,E>>>?>ILMSJLHEGBEDCHH?===>F22222224?BABIJB?>9CGGLJIGOGGHG<<<<<C..333<,,,*),,.4:81226622BAA@BHHDEGIFDHBBDDHFEEGHGGFHMMGIFGGF?=>=@IGGFHJKA?<;;<==@BEFECD@?@@@BDBCCFGDDGDB>>>BBDFFD:66<=BAA@==>>=>>?EBBBCCIFGEEDEDEBBACCBACDEFFIIHFCBAAAC65556ACCABCFJFHGFEFFDDEC@A@ACBC@@>9:1/ECGGFDCDD?<;;;?@<2***),--.8889?A=>=>;:::988/()00.0/0>@ABB76666?JCIGGFFDFFFEEECCCBICDDCBCDFDHH@>>=<@ABEFAB454-+*)(+-/224==>CBBCCDED=<<<>>>A?=;*****:CA<<<::;?@AB@DFBBAAAFFFIFEDKFC@BACDFF:7854444:DCDFMCEGGCEFDIJAMRIKEEFABBHHJHNJIHHFFGDEGFFFIJ{OIMILGKF:;78;;?BD@@22222<FGECDD@=>>>>HLHA77ABBAA>>@AB@?:9::;HEBB?>>::<:;;3*('''')))/23--?=<=<@B?AAA>76533667E>>>>>CDCFFFHILGEEDCDDDFHGILHJIEEFGEH;9:::>988888861/,+,--+1113ECCDBAAAADFIHIHIH=;;;<A?:::HGE????=@@@BFJFLFJIGD:999:AA@@ADDGGFHIFA@@@@FFFEEDEDDCCCCCCEDFIFDABB>8888=@CBEFF+***+DGF@@@?@D?@@@BHFFGECDBAHILG;;;:;>>?ACB87777B?<<<=>BC6;.++&&&&&&%&*)1;:9<<ACC....---;0/0..//6+<<<BBBCB?>>*))))
+@b54d96bc-40da-4cad-91d1-1f53b75ae40b runid=bcf4b7732185c1a3353d1b4fe80266cd3ac60162 sampleid=no_sample read=10540 ch=101 start_time=2024-04-27T23:58:25Z model_version_id=2021-11-17_dna_r10.4_minion_promethion_1024_67af0493
+```
 
 ### Basecalling de POD5
 
 #### Obtención de archivos POD5
+
 ```bash
 cd ~/genomics/basecalling
 
 mkdir pod5
 
 cd pod5
-
-conda deactivate
 
 pod5 convert fast5 /home/ins_user/genomics/raw_data/fast5/*.fast5 --output converted.pod5
 ```
