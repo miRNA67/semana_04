@@ -6,12 +6,13 @@ Al finalizar la sesión, el estudiante realiza el basecalling de los archivos FA
 
 ## Estructura de la práctica:
 
-1.  Acceso al servidor de cómputo
+1. Acceso al servidor de cómputo
 2.	Análisis de calidad de archivos FASTQ de Illumina
 3.	Limpieza de los archivos FASTQ de Illumina
-4.	Basecalling de los archivos POD5 y FAST5
+4.	Basecalling de los archivos POD5 y FAST5 de Nanopore
 5.	Análisis de calidad de archivos FASTQ de Nanopore
 6.	Limpieza de los archivos FASTQ de Nanopore
+7.	Análisis de calidad y limpieza de los datos de secuenciación Nanopore generados en el curso
 
 ## Programas requeridos:
 
@@ -197,7 +198,7 @@ fastqc -t 2 *.trim.fastq.gz -o .
 multiqc -o trimming_trimmomatic .
 ```
 
-## 4. Basecalling de datos de secuenciación Nanopore
+## 4. Basecalling de los archivos POD5 y FAST5 de Nanopore
 
 ### Basecalling de FAST5
 
@@ -306,10 +307,10 @@ AGGGCTTATTACTGATAAAAAAAGCAAAACGATTTATAAAATTGAGTCAAAACGGTCTTTGCAGCCGGGCATATACGCAT
 ```
 
 ```bash
-gzip b15.fastq.gz
+gzip b15.fastq
 ```
 
-## 5. Análisis de calidad del secuenciamiento Nanopore 
+## 5. Análisis de calidad de archivos FASTQ de Nanopore
 
 ### Visualización de la calidad
 
@@ -328,6 +329,8 @@ NanoPlot -t 2 --fastq ~/genomics/basecalling/pod5_db_sup/b15.fastq.gz -p b15_sup
 > - `-p b15_sup_db_`: Define el prefijo que se usará para los nombres de los archivos de salida. En este caso, todos los gráficos generados comenzarán con "b15_sup_db_".
 > - `-o b15_sup_db`: Especifica el directorio de salida donde se guardarán los gráficos. Si el directorio no existe, NanoPlot lo creará.
 > - `--maxlength 1000000`: Establece la longitud máxima que se mostrará en los gráficos. Las lecturas que superen esta longitud serán truncadas en las visualizaciones. Esto ayuda a enfocar el análisis en la mayoría de las lecturas y evita que las lecturas extremadamente largas distorsionen la visualización.
+
+## 6.	Limpieza de los archivos FASTQ de Nanopore
 
 ### Eliminación de adaptadores
 
@@ -355,10 +358,62 @@ gunzip -c ~/genomics/trimming/nanopore/b15_sup_porechop.fastq.gz | NanoFilt -q 1
 > - `gunzip -c ~/genomics/trimming/nanopore/b15_sup_porechop.fastq.gz`: Descomprime el archivo "b15_sup_porechop.fastq.gz".
 > - `NanoFilt -q 10 --length 1000`: Filtra las lecturas descomprimidas utilizando NanoFilt, manteniendo solo aquellas que tengan un puntaje de calidad mínimo de 10 y una longitud mínima de 1000 bases.
 > - `gzip > b15_sup_nanofilt.fastq.gz`: Comprime las lecturas filtradas y las guarda en un nuevo archivo llamado "b15_sup_nanofilt.fastq.gz".
-> - `|`: Este símbolo es una "tubería" (pipe) que conecta la salida de un comando a la entrada de otro. 
+> - `|`: Este símbolo es una "tubería" (pipe) que conecta la salida de un comando a la entrada de otro.
 
 ```bash
 cd ~/genomics/quality/nanopore
 
 NanoPlot -t 2 --fastq ~/genomics/trimming/nanopore/b15_sup_nanofilt.fastq.gz -p b15_sup_filt_ -o b15_sup_filt --maxlength 100000
 ```
+
+## 7.	Análisis de calidad y limpieza de los datos de secuenciación Nanopore generados en el curso
+
+```bash
+tree /data/2025_1/sequencing/portable/genomica_4promo/no_sample/20240603_0321_MC-115276_FAZ09790_717b75c5/pod5_pass/
+
+/data/2025_1/sequencing/portable/genomica_4promo/no_sample/20240603_0321_MC-115276_FAZ09790_717b75c5/pod5_pass/
+├── barcode01
+│   ├── FAZ09790_pass_barcode01_717b75c5_e7d1c01d_0.pod5
+│   ├── FAZ09790_pass_barcode01_717b75c5_e7d1c01d_1.pod5
+│   └── FAZ09790_pass_barcode01_717b75c5_e7d1c01d_2.pod5
+├── barcode02
+│   ├── FAZ09790_pass_barcode02_717b75c5_e7d1c01d_0.pod5
+│   └── FAZ09790_pass_barcode02_717b75c5_e7d1c01d_1.pod5
+├── barcode03
+│   ├── FAZ09790_pass_barcode03_717b75c5_e7d1c01d_0.pod5
+│   └── FAZ09790_pass_barcode03_717b75c5_e7d1c01d_1.pod5
+├── barcode04
+│   └── FAZ09790_pass_barcode04_717b75c5_e7d1c01d_0.pod5
+├── barcode06
+│   ├── FAZ09790_pass_barcode06_717b75c5_e7d1c01d_0.pod5
+│   └── FAZ09790_pass_barcode06_717b75c5_e7d1c01d_1.pod5
+├── barcode07
+│   └── FAZ09790_pass_barcode07_717b75c5_e7d1c01d_0.pod5
+├── barcode09
+│   ├── FAZ09790_pass_barcode09_717b75c5_e7d1c01d_0.pod5
+│   ├── FAZ09790_pass_barcode09_717b75c5_e7d1c01d_1.pod5
+│   └── FAZ09790_pass_barcode09_717b75c5_e7d1c01d_2.pod5
+├── barcode10
+│   └── FAZ09790_pass_barcode10_717b75c5_e7d1c01d_0.pod5
+├── barcode12
+│   └── FAZ09790_pass_barcode12_717b75c5_e7d1c01d_0.pod5
+├── barcode15
+│   └── FAZ09790_pass_barcode15_717b75c5_e7d1c01d_0.pod5
+├── barcode19
+│   └── FAZ09790_pass_barcode19_717b75c5_e7d1c01d_0.pod5
+├── barcode20
+│   └── FAZ09790_pass_barcode20_717b75c5_e7d1c01d_0.pod5
+├── barcode22
+│   └── FAZ09790_pass_barcode22_717b75c5_e7d1c01d_0.pod5
+├── barcode23
+│   └── FAZ09790_pass_barcode23_717b75c5_e7d1c01d_0.pod5
+├── mixed
+│   └── FAZ09790_pass_mixed_717b75c5_e7d1c01d_0.pod5
+└── unclassified
+    ├── FAZ09790_pass_unclassified_717b75c5_e7d1c01d_0.pod5
+    └── FAZ09790_pass_unclassified_717b75c5_e7d1c01d_1.pod5
+
+16 directories, 24 files
+```
+
+
