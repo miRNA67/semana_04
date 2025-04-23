@@ -1,6 +1,8 @@
 # Semana 04: Basecalling de los datos de secuenciación - Visualización de la calidad y limpieza de los archivos FASTQ
 
-## Logro de la sesión: Al finalizar la sesión, el estudiante realiza el basecalling de los archivos FAST5 y la limpieza de los archivos FASTQ con diferentes herramientas bioinformáticas.
+## Logro de la sesión: 
+
+Al finalizar la sesión, el estudiante realiza el basecalling de los archivos FAST5 y la limpieza de los archivos FASTQ con diferentes herramientas bioinformáticas.
 
 ## Estructura de la práctica:
 
@@ -13,31 +15,186 @@
 
 ## Programas requeridos:
 
-Programas de acceso al servidor:
+### Programas de acceso al servidor:
 
-putty			  v0.79		  https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html 
-winscp			v6.1		  https://winscp.net/eng/download.php 
+PuTTY v0.79 https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+   - **Descripción:** PuTTY es un cliente SSH, Telnet y Rlogin gratuito y de código abierto para Windows y sistemas Unix. Se utiliza principalmente para establecer conexiones seguras de línea de comandos a servidores remotos.
 
-Programas bioinformáticos:
+WinSCP v6.1 https://winscp.net/eng/download.php
+   - **Descripción:** WinSCP es un cliente SFTP, FTP, WebDAV, Amazon S3 y SCP gratuito y de código abierto para Windows. Permite la transferencia segura de archivos entre un ordenador local y servidores remotos mediante una interfaz gráfica de usuario. 
 
-fastqc			  v0.12.1	  http://www.bioinformatics.babraham.ac.uk/projects/fastqc/  
-guppy			    v6.5.7		https://community.nanoporetech.com/downloads/ 
-nanofilt		  v2.8.0		https://github.com/wdecoster/nanofilt 
-nanoplot		  v1.41.6	  https://github.com/wdecoster/NanoPlot
-pycoqc			  v2.5.2		https://github.com/a-slide/pycoQC 
-porechop		  v0.2.4		https://github.com/rrwick/Porechop 
-trimgalore	  v0.6.10	  https://github.com/FelixKrueger/TrimGalore 
-trimmomatic	  v0.39		  http://www.usadellab.org/cms/?page=trimmomatic 
+### Programas bioinformáticos:
 
+FastQC v0.12.1 http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+   - **Descripción:** FastQC es una herramienta de control de calidad para datos de secuenciación de alto rendimiento. Proporciona un informe detallado que ayuda a identificar posibles problemas en los datos brutos antes del análisis posterior.
 
+Guppy v6.5.7 https://community.nanoporetech.com/downloads/
+   - **Descripción:** Guppy es un software desarrollado por Oxford Nanopore Technologies para la llamada de bases (basecalling) de las señales eléctricas generadas por sus secuenciadores de ADN. También incluye funcionalidades para el multiplexado y el filtrado de reads.
 
+Nanofilt v2.8.0 https://github.com/wdecoster/nanofilt
+   - **Descripción:** NanoFilt es una herramienta para filtrar datos de secuenciación de Nanopore basándose en la calidad y la longitud de los reads. Permite seleccionar reads de alta calidad para análisis posteriores.
 
+NanoPlot v1.41.6 https://github.com/wdecoster/NanoPlot
+   - **Descripción:** NanoPlot es una herramienta para la visualización de datos de secuenciación de Nanopore. Genera varios tipos de gráficos para evaluar la calidad y las características de los reads, como la distribución de longitudes y la calidad a lo largo de los reads.
 
-<img width="213" alt="image" src="https://github.com/user-attachments/assets/93dad303-9089-4f50-a654-92bcd5d0ff99" />
+PycoQC v2.5.2 https://github.com/a-slide/pycoQC
+   - **Descripción:** PycoQC es una herramienta para el control de calidad de datos de secuenciación de Oxford Nanopore, similar a FastQC pero diseñada específicamente para este tipo de datos. Genera informes interactivos en HTML con diversas métricas de calidad.
+
+Porechop v0.2.4 https://github.com/rrwick/Porechop
+   - **Descripción:** Porechop es una herramienta para identificar y recortar adaptadores de horquilla (hairpin adapters) que a veces se forman durante la secuenciación de ADN largo con tecnología de Oxford Nanopore. También puede detectar y dividir reads concatenados (chimeric reads).
+
+TrimGalore v0.6.10 https://github.com/FelixKrueger/TrimGalore
+   - **Descripción:** Trim Galore! es un wrapper alrededor de Cutadapt y FastQC para realizar el recorte de adaptadores y el control de calidad en datos de secuenciación de alto rendimiento. Automatiza el proceso de recorte y genera informes de calidad.
+
+Trimmomatic v0.39 http://www.usadellab.org/cms/?page=trimmomatic
+   - **Descripción:** Trimmomatic es una herramienta flexible y rápida para realizar el recorte de adaptadores y el filtrado de calidad en datos de secuenciación de Illumina. Permite eliminar secuencias de adaptadores, bases de baja calidad y reads demasiado cortos.
 
 ## Metodología:
 
-## 1. Instalación de programas
+## 1.	Acceso al servidor de cómputo (20 minutos):
+
+Abrir el programa PuTTY, colocar el hostname ( 10.142.250.66 ) y port ( 22 ), y dar clic en Open:
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/92f89dbb-1a21-411d-adb5-38fe486a5567" />
+
+
+En la terminal abierta, escribir su usuario y contraseña correspondiente para tener acceso al servidor de cómputo Tensor:
+ 
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/4d246e93-c59c-4749-a2dd-03db25c53654" />
+
+
+Abrir el programa WinSCP, colocar el hostname ( 10.142.250.66 ) y port ( 22 ), escribir su usuario y contraseña correspondiente para tener acceso al servidor de cómputo Tensor, y hacer clic en Login:
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/ef4dc253-ce4a-417d-b761-39692d2a011a" />
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/577debca-6085-47c5-9bbd-73688bfa8bb0" />
+
+
+## 2. Análisis de calidad de archivos FASTQ de Illumina
+
+```bash
+
+cd
+
+mkdir genomics
+
+cd genomics
+
+mkdir quality
+
+cd quality
+
+mkdir illumina
+
+cd illumina
+
+conda activate quality
+
+fastqc -t 8 /data/2025_1/database/illumina/CAT_R1.fastq.gz -o .
+```
+
+> **Comentario:** 
+> - `-t 2`: Esta opción especifica el número de hilos (threads) que FastQC debe utilizar. Al usar múltiples hilos, el programa puede procesar los datos más rápidamente. En este caso, se están usando 2 hilos.
+> - `/data/2024_2/genome/illumina/*.fastq.gz`: Esta parte del comando indica la ubicación de los archivos que FastQC debe analizar.
+> - `*.fastq.gz`: Es un comodín que selecciona todos los archivos en ese directorio que terminan con ".fastq.gz". Esto significa que FastQC analizará todos los archivos FASTQ comprimidos en ese directorio. Los archivos fastq.gz son el formato de archivos donde se guardan las lecturas de las secuencias de ADN.
+> - `-o .`: Esta opción define el directorio de salida. El punto "." representa el directorio actual. Esto significa que los informes HTML generados por FastQC se guardarán en el mismo directorio donde se ejecuta el comando.
+
+```bash
+multiqc -o raw_illumina .
+```
+> **Comentario:**
+> - `-o raw_illumina`: Esta opción especifica el directorio de salida donde se guardará el informe HTML generado por MultiQC.
+> - `.`: Representa el directorio actual. Esto le dice a MultiQC que busque archivos de resultados (los que ha generado FastQC por ejemplo) dentro del directorio en el que estás ejecutando el comando. MultiQC buscará automáticamente archivos de salida de las herramientas de control de calidad compatibles que se encuentren en el directorio actual y sus subdirectorios.
+
+## 3.	Limpieza de los archivos FASTQ de Illumina
+
+### Limpieza con trim galore
+
+```bash
+cd ~/genomics
+
+mkdir trimming
+
+cd trimming
+
+mkdir illumina
+
+cd illumina
+
+mkdir trim_galore
+
+cd trim_galore
+
+trim_galore --quality 30 --length 50 --phred33 --cores 2 --fastqc --paired /home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz /home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz
+```
+
+> **Comentario:**
+> - `--quality 30`: Esta opción especifica el umbral de calidad para el recorte de bases. Las bases con una calidad inferior a 30 (en escala Phred33) serán recortadas del final de las lecturas.
+> - `--length 50`: Esta opción establece la longitud mínima de las lecturas después del recorte. Las lecturas que sean más cortas que 50 bases serán descartadas.
+> - `--phred33`: Esta opción indica que los datos de calidad de las bases están en la escala Phred33, que es la escala más común utilizada en la secuenciación Illumina.
+> - `--cores 2`: Esta opción especifica el número de núcleos de procesamiento que Trim Galore! debe utilizar. En este caso, se están utilizando 2 núcleos para acelerar el procesamiento.
+> - `--fastqc`: Esta opción le indica a Trim Galore! que ejecute FastQC automáticamente después del recorte para generar informes de control de calidad de los datos recortados.
+> - `-paired`: Esta opción indica que los datos son pareados (paired-end), lo que significa que las lecturas vienen en pares (R1 y R2).
+> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R1 (la primera lectura del par).
+> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R2 (la segunda lectura del par).
+
+```bash
+multiqc -o trimming_trim_galore .
+```
+
+### Limpieza con trimmomatic
+
+```bash
+cd ~/genomics/trimming/illumina
+
+mkdir trimmomatic
+
+cd trimmomatic
+```
+
+> **Comentario:** Crear el archivo NexteraPE.fa
+
+```bash
+nano NexteraPE.fa
+
+>PrefixNX/1
+AGATGTGTATAAGAGACAG
+>PrefixNX/2
+AGATGTGTATAAGAGACAG
+>Trans1
+TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
+>Trans1_rc
+CTGTCTCTTATACACATCTGACGCTGCCGACGA
+>Trans2
+GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG
+>Trans2_rc
+CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
+```
+
+```bash
+trimmomatic PE /home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz /home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz T4_R1.trim.fastq.gz T4_R1.unpaired.fastq.gz T4_R2.trim.fastq.gz T4_R2.unpaired.fastq.gz ILLUMINACLIP:NexteraPE.fa:2:30:10 SLIDINGWINDOW:4:30 MINLEN:50 -threads 2
+```
+
+> **Comentario:**
+> - `PE`: Indica que los datos son pareados (paired-end).
+> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R1 (la primera lectura del par).
+> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R2 (la segunda lectura del par).
+> - `T4_R1.trim.fastq.gz`: Archivo de salida para las lecturas R1 recortadas y emparejadas.
+> - `T4_R1.unpaired.fastq.gz`: Archivo de salida para las lecturas R1 que quedaron sin par después del recorte.
+> - `T4_R2.trim.fastq.gz`: Archivo de salida para las lecturas R2 recortadas y emparejadas.
+> - `T4_R2.unpaired.fastq.gz`: Archivo de salida para las lecturas R2 que quedaron sin par después del recorte.
+> - `ILLUMINACLIP:NexteraPE.fa:2:30:10`: Son los parámetros para el recorte de adaptadores (mismatch allowance:palindrom match threshold:simple match threshold).
+> - `SLIDINGWINDOW:4:30`: Indica que se va a utilizar una ventana deslizante de 4 bases y que la calidad promedio mínima dentro de la ventana debe ser 30.
+> - `MINLEN:50`: Esta opción establece la longitud mínima de las lecturas después del recorte. Las lecturas que sean más cortas que 50 bases serán descartadas.
+
+```bash
+fastqc -t 2 *.trim.fastq.gz -o .
+
+multiqc -o trimming_trimmomatic .
+```
+ 
+
+
 
 ### Instalación de guppy
 
@@ -136,121 +293,7 @@ gdown https://drive.google.com/uc?id=1FyGJAS33tB-DkbAiL2195ACaWf_qIi3Z
 unzip fast5.zip 
 ```
 
-## 3. Analisis de calidad de datos de secuenciación Illumina
 
-```bash
-cd ~/genomics
-
-mkdir quality
-
-cd quality
-
-mkdir illumina
-
-cd illumina
-
-conda activate quality
-
-fastqc -t 2 /home/ins_user/genomics/raw_data/*.fastq.gz -o .
-```
-
-> **Comentario:** 
-> - `-t 2`: Esta opción especifica el número de hilos (threads) que FastQC debe utilizar. Al usar múltiples hilos, el programa puede procesar los datos más rápidamente. En este caso, se están usando 2 hilos.
-> - `/data/2024_2/genome/illumina/*.fastq.gz`: Esta parte del comando indica la ubicación de los archivos que FastQC debe analizar.
-> - `*.fastq.gz`: Es un comodín que selecciona todos los archivos en ese directorio que terminan con ".fastq.gz". Esto significa que FastQC analizará todos los archivos FASTQ comprimidos en ese directorio. Los archivos fastq.gz son el formato de archivos donde se guardan las lecturas de las secuencias de ADN.
-> - `-o .`: Esta opción define el directorio de salida. El punto "." representa el directorio actual. Esto significa que los informes HTML generados por FastQC se guardarán en el mismo directorio donde se ejecuta el comando.
-
-```bash
-multiqc -o raw_illumina .
-```
-> **Comentario:**
-> - `-o raw_illumina`: Esta opción especifica el directorio de salida donde se guardará el informe HTML generado por MultiQC.
-> - `.`: Representa el directorio actual. Esto le dice a MultiQC que busque archivos de resultados (los que ha generado FastQC por ejemplo) dentro del directorio en el que estás ejecutando el comando. MultiQC buscará automáticamente archivos de salida de las herramientas de control de calidad compatibles que se encuentren en el directorio actual y sus subdirectorios.
-
-### Limpieza con trim galore
-
-```bash
-cd ~/genomics
-
-mkdir trimming
-
-cd trimming
-
-mkdir illumina
-
-cd illumina
-
-mkdir trim_galore
-
-cd trim_galore
-
-trim_galore --quality 30 --length 50 --phred33 --cores 2 --fastqc --paired /home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz /home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz
-```
-
-> **Comentario:**
-> - `--quality 30`: Esta opción especifica el umbral de calidad para el recorte de bases. Las bases con una calidad inferior a 30 (en escala Phred33) serán recortadas del final de las lecturas.
-> - `--length 50`: Esta opción establece la longitud mínima de las lecturas después del recorte. Las lecturas que sean más cortas que 50 bases serán descartadas.
-> - `--phred33`: Esta opción indica que los datos de calidad de las bases están en la escala Phred33, que es la escala más común utilizada en la secuenciación Illumina.
-> - `--cores 2`: Esta opción especifica el número de núcleos de procesamiento que Trim Galore! debe utilizar. En este caso, se están utilizando 2 núcleos para acelerar el procesamiento.
-> - `--fastqc`: Esta opción le indica a Trim Galore! que ejecute FastQC automáticamente después del recorte para generar informes de control de calidad de los datos recortados.
-> - `-paired`: Esta opción indica que los datos son pareados (paired-end), lo que significa que las lecturas vienen en pares (R1 y R2).
-> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R1 (la primera lectura del par).
-> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R2 (la segunda lectura del par).
-
-```bash
-multiqc -o trimming_trim_galore .
-```
-
-### Limpieza con trimmomatic
-
-```bash
-cd ~/genomics/trimming/illumina
-
-mkdir trimmomatic
-
-cd trimmomatic
-```
-
-> **Comentario:** Crear el archivo NexteraPE.fa
-
-```bash
-nano NexteraPE.fa
-
->PrefixNX/1
-AGATGTGTATAAGAGACAG
->PrefixNX/2
-AGATGTGTATAAGAGACAG
->Trans1
-TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
->Trans1_rc
-CTGTCTCTTATACACATCTGACGCTGCCGACGA
->Trans2
-GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG
->Trans2_rc
-CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
-```
-
-```bash
-trimmomatic PE /home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz /home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz T4_R1.trim.fastq.gz T4_R1.unpaired.fastq.gz T4_R2.trim.fastq.gz T4_R2.unpaired.fastq.gz ILLUMINACLIP:NexteraPE.fa:2:30:10 SLIDINGWINDOW:4:30 MINLEN:50 -threads 2
-```
-
-> **Comentario:**
-> - `PE`: Indica que los datos son pareados (paired-end).
-> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R1_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R1 (la primera lectura del par).
-> - `/home/ins_user/genomics/raw_data/T4_S1_L001_R2_001.fastq.gz`: Esta es la ruta del archivo FASTQ comprimido que contiene las lecturas R2 (la segunda lectura del par).
-> - `T4_R1.trim.fastq.gz`: Archivo de salida para las lecturas R1 recortadas y emparejadas.
-> - `T4_R1.unpaired.fastq.gz`: Archivo de salida para las lecturas R1 que quedaron sin par después del recorte.
-> - `T4_R2.trim.fastq.gz`: Archivo de salida para las lecturas R2 recortadas y emparejadas.
-> - `T4_R2.unpaired.fastq.gz`: Archivo de salida para las lecturas R2 que quedaron sin par después del recorte.
-> - `ILLUMINACLIP:NexteraPE.fa:2:30:10`: Son los parámetros para el recorte de adaptadores (mismatch allowance:palindrom match threshold:simple match threshold).
-> - `SLIDINGWINDOW:4:30`: Indica que se va a utilizar una ventana deslizante de 4 bases y que la calidad promedio mínima dentro de la ventana debe ser 30.
-> - `MINLEN:50`: Esta opción establece la longitud mínima de las lecturas después del recorte. Las lecturas que sean más cortas que 50 bases serán descartadas.
-
-```bash
-fastqc -t 2 *.trim.fastq.gz -o .
-
-multiqc -o trimming_trimmomatic .
-```
 
 ## 4. Basecalling de datos de secuenciación Nanopore
 
