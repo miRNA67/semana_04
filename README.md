@@ -214,7 +214,7 @@ guppy_basecaller -i /data/2025_1/database/nanopore/fast5 -s fast5_db_sup -c dna_
 > **Comentario:** 
 > - `-i /data/2025_1/database/nanopore/fast5`: Esta opción especifica el directorio de entrada donde se encuentran los archivos de datos de secuenciación crudos (en formato FAST5). Guppy leerá todos los archivos FAST5 dentro de este directorio.
 > - `-s fast5_db_sup`: Esto define el directorio de salida donde se guardarán los datos después del basecalling. En este caso, se creará un directorio llamado fast5_db_sup en tu directorio de trabajo actual para almacenar los archivos de salida (típicamente archivos FASTQ).
-> - `-c dna_r10.4_e8.1_fast.cfg`: Esta opción especifica el archivo de configuración que se utilizará para el "basecalling". El archivo dna_r10.4_e8.1_sup.cfg contiene ajustes optimizados para la celda de flujo R10.4 y el modelo de "basecalling" "sup" . Este modelo es conocido por su mayor exactitud en la identificación de las bases.
+> - `-c dna_r10.4_e8.1_sup.cfg`: Esta opción especifica el archivo de configuración que se utilizará para el "basecalling". El archivo dna_r10.4_e8.1_sup.cfg contiene ajustes optimizados para la celda de flujo R10.4 y el modelo de "basecalling" "sup" . Este modelo es conocido por su mayor exactitud en la identificación de las bases.
 > - `-x 'cuda:0'`: Esta opción habilita la aceleración por GPU para el proceso de basecalling, lo que puede acelerar significativamente la computación. 'cuda:0' especifica que deseas utilizar la primera GPU habilitada para CUDA (índice 0) disponible en tu sistema.
 
 ```bash
@@ -252,6 +252,17 @@ cd pod5_db_sup
 dorado basecaller sup --kit-name SQK-NBD114-24 --min-qscore 10 --device 'cuda:0' --barcode-both-ends --models-directory 
 /data/software/dorado-0.9.1-linux-x64/models /data/2025_1/database/nanopore/pod5/barcode15.pod5 > b15_calls.bam
 ```
+
+> **Comentario:** 
+
+> - `sup`: Esta opción indica que se debe utilizar el modelo de basecalling de "super precisión" (super accuracy). Estos modelos están entrenados para ofrecer una mayor exactitud en la llamada de bases.
+> - `--kit-name SQK-NBD114-24`: Este parámetro especifica el nombre del kit de secuenciación utilizado. En este caso, es el kit SQK-NBD114-24. Esta información puede ayudar a Dorado a seleccionar los modelos de basecalling más apropiados.
+> - `--min-qscore 10`: Esta opción establece un umbral de calidad mínima para las bases llamadas. Solo las bases con una puntuación de calidad (Q-score) igual o superior a 10 se incluirán en la salida. El Q-score es una medida de la probabilidad de que una base llamada sea incorrecta. Un Q-score de 10 significa una probabilidad de error de 1 en 10.
+> - `--device 'cuda:0'`: Esto indica que Dorado debe utilizar la primera GPU habilitada para CUDA (índice 0) disponible en tu sistema para acelerar el proceso de basecalling. El uso de la GPU puede reducir significativamente el tiempo de procesamiento.
+> - `--barcode-both-ends`: Esta opción le dice a Dorado que intente identificar códigos de barras (barcodes) en ambos extremos de las lecturas de secuencia. Esto es útil si tu protocolo de secuenciación incluyó el uso de códigos de barras en ambos extremos para multiplexar muestras.
+> - `--models-directory /data/software/dorado-0.9.1-linux-x64/models`: Este parámetro especifica la ruta al directorio donde Dorado puede encontrar los modelos de basecalling pre-entrenados. Es importante que la ruta sea correcta para que Dorado pueda cargar los modelos necesarios.
+> - `/data/2025_1/database/nanopore/pod5/barcode15.pod5`: Esta es la ruta al archivo de entrada POD5 que contiene los datos de señal sin procesar para una muestra con el código de barras (barcode) número 15. Dorado realizará el basecalling de los datos contenidos en este archivo.
+> - `> b15_calls.bam`: Esto redirige la salida estándar (stdout) del comando Dorado al archivo llamado b15_calls.bam. En este caso, Dorado generará las secuencias base-llamadas y la información de alineamiento (si se realiza) en formato BAM (Binary Alignment Map), que es un formato común para almacenar datos de secuenciación alineados o sin alinear.
 
 #### Conversión de bam a fastq
 
