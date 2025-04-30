@@ -58,7 +58,7 @@ Trimmomatic v0.39 http://www.usadellab.org/cms/?page=trimmomatic
 
 ## Metodología:
 
-## 1.	Acceso al servidor de cómputo (20 minutos):
+## 1.	Acceso al servidor de cómputo:
 
 ### Abrir el programa PuTTY, colocar el hostname ( 10.142.250.66 ) y port ( 22 ), y dar clic en Open:
 
