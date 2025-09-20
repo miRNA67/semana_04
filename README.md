@@ -375,51 +375,7 @@ NanoPlot -t 2 --fastq ~/genomics/trimming/nanopore/b15_sup_nanofilt.fastq.gz -p 
 ## 7.	Análisis de calidad y limpieza de los datos de secuenciación Nanopore generados en el curso
 
 ```bash
-tree /data/2025_1/sequencing/portable/genomica_4promo/no_sample/20240603_0321_MC-115276_FAZ09790_717b75c5/pod5_pass/
-
-/data/2025_1/sequencing/portable/genomica_4promo/no_sample/20240603_0321_MC-115276_FAZ09790_717b75c5/pod5_pass/
-├── barcode01
-│   ├── FAZ09790_pass_barcode01_717b75c5_e7d1c01d_0.pod5
-│   ├── FAZ09790_pass_barcode01_717b75c5_e7d1c01d_1.pod5
-│   └── FAZ09790_pass_barcode01_717b75c5_e7d1c01d_2.pod5
-├── barcode02
-│   ├── FAZ09790_pass_barcode02_717b75c5_e7d1c01d_0.pod5
-│   └── FAZ09790_pass_barcode02_717b75c5_e7d1c01d_1.pod5
-├── barcode03
-│   ├── FAZ09790_pass_barcode03_717b75c5_e7d1c01d_0.pod5
-│   └── FAZ09790_pass_barcode03_717b75c5_e7d1c01d_1.pod5
-├── barcode04
-│   └── FAZ09790_pass_barcode04_717b75c5_e7d1c01d_0.pod5
-├── barcode06
-│   ├── FAZ09790_pass_barcode06_717b75c5_e7d1c01d_0.pod5
-│   └── FAZ09790_pass_barcode06_717b75c5_e7d1c01d_1.pod5
-├── barcode07
-│   └── FAZ09790_pass_barcode07_717b75c5_e7d1c01d_0.pod5
-├── barcode09
-│   ├── FAZ09790_pass_barcode09_717b75c5_e7d1c01d_0.pod5
-│   ├── FAZ09790_pass_barcode09_717b75c5_e7d1c01d_1.pod5
-│   └── FAZ09790_pass_barcode09_717b75c5_e7d1c01d_2.pod5
-├── barcode10
-│   └── FAZ09790_pass_barcode10_717b75c5_e7d1c01d_0.pod5
-├── barcode12
-│   └── FAZ09790_pass_barcode12_717b75c5_e7d1c01d_0.pod5
-├── barcode15
-│   └── FAZ09790_pass_barcode15_717b75c5_e7d1c01d_0.pod5
-├── barcode19
-│   └── FAZ09790_pass_barcode19_717b75c5_e7d1c01d_0.pod5
-├── barcode20
-│   └── FAZ09790_pass_barcode20_717b75c5_e7d1c01d_0.pod5
-├── barcode22
-│   └── FAZ09790_pass_barcode22_717b75c5_e7d1c01d_0.pod5
-├── barcode23
-│   └── FAZ09790_pass_barcode23_717b75c5_e7d1c01d_0.pod5
-├── mixed
-│   └── FAZ09790_pass_mixed_717b75c5_e7d1c01d_0.pod5
-└── unclassified
-    ├── FAZ09790_pass_unclassified_717b75c5_e7d1c01d_0.pod5
-    └── FAZ09790_pass_unclassified_717b75c5_e7d1c01d_1.pod5
-
-16 directories, 24 files
+tree /data/2025_2/genomics/fastq
 ```
 
 
