@@ -349,7 +349,7 @@ porechop -t 10 -i ~/genomics/basecalling/pod5_db_sup/b15.fastq.gz -o b15_sup_por
 ### Eliminación de quimeras
 
 ```bash
-cd ~/genomics/trimming/
+cd ~/genomics/trimming/nanopore
 
 minimap2 -x ava-ont -g 500 -t 10 b15_sup_porechop.fastq.gz b15_sup_porechop.fastq.gz > b15_overlap.paf
 
