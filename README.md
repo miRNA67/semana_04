@@ -412,6 +412,7 @@ tree /data/2026_1/genomics/
 ```
 
 > **Bitácora bioinformática:** 
+> - `Caratula (usar el de Principios de Programación Bioinformática)`
 > - `Titulo`
 > - `Objetivo de la practica`
 > - `Metodologia: Flujograma de los analisis realizados (tanto para Illumina y Nanopore)`
