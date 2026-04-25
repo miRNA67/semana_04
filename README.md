@@ -2,7 +2,7 @@
 
 ## Logro de la sesión: 
 
-Al finalizar la sesión, el estudiante realiza el basecalling de los archivos FAST5 y la limpieza de los archivos FASTQ con diferentes herramientas bioinformáticas.
+Al finalizar la sesión, el estudiante realiza el basecalling de los archivos POD5 y la limpieza de los archivos FASTQ con diferentes herramientas bioinformáticas.
 
 ## Estructura de la práctica:
 
