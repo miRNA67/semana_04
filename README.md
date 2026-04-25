@@ -394,4 +394,17 @@ seqkit stats -a -j 10 *.fastq.gz > b15_stats_fastq.txt
 tree /data/2026_1/genomics/
 ```
 
+> **Comentario:** 
+> - `Realizar todo el proceso de visualización de calidad y limpieza del fastq de su respectivo barcode`
+> - `Mantener la siguiente estructura de carpetas:
+
+~/genomics/
+├── basecalling/          # Archivos BAM y FASTQ iniciales (Dorado)
+│   └── pod5_db_sup/      
+├── quality/              # Informes de FastQC, NanoPlot y PycoQC
+│   ├── illumina/
+│   └── nanopore/
+└── trimming/             # Archivos procesados y limpios
+    ├── illumina/
+    └── nanopore/         # Resultados de Porechop, YACRD y NanoFilt`
 
