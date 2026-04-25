@@ -391,14 +391,15 @@ seqkit stats -a -j 10 *.fastq.gz > b15_stats_fastq.txt
 ## 7.	Análisis de calidad y limpieza de los datos de secuenciación Nanopore generados en el curso
 
 > **Comentario:** 
-> - `Realizar todo el proceso de visualización de calidad y limpieza del fastq de su respectivo barcode`
+> - `Realizar todo el proceso de visualización de calidad y limpieza del FASTQ de su respectivo barcode.`
+> - `Localización de los archivos FASTQ:`
 
 ```bash
 tree /data/2026_1/genomics/
 ```
 
 > **Comentario:** 
-> - `Mantener la siguiente estructura de carpetas`
+> - `Mantener la siguiente estructura de carpetas:`
 
 ```bash
 ~/genomics/
