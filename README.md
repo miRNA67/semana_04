@@ -412,4 +412,11 @@ tree /data/2026_1/genomics/
 ```
 
 > **Bitácora bioinformática:** 
-> - `Sorpresa!`
+> - `Titulo`
+> - `Objetivo de la practica`
+> - `Metodologia: Flujograma de los analisis realizados (tanto para Illumina y Nanopore)`
+> - `Metodologia: Estructura de las carpetas`
+> - `Resultados: Analisis de calidad de los datos crudos de Nanopore`
+> - `Resultados: Estadisticas de los FASTQ en cada etapa de la limpieza`
+> - `Resultados: Indicar el número total (%) de lecturas que se perdieron en el proceso de limpieza)`
+> - `Discusión: Que importancia tiene la limpieza de lecturas de Nanopore`
