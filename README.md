@@ -9,7 +9,7 @@ Al finalizar la sesión, el estudiante realiza el basecalling de los archivos FA
 1. Acceso al servidor de cómputo
 2.	Análisis de calidad de archivos FASTQ de Illumina
 3.	Limpieza de los archivos FASTQ de Illumina
-4.	Basecalling de los archivos POD5 y FAST5 de Nanopore
+4.	Basecalling de los archivos POD5 de Nanopore
 5.	Análisis de calidad de archivos FASTQ de Nanopore
 6.	Limpieza de los archivos FASTQ de Nanopore
 7.	Análisis de calidad y limpieza de los datos de secuenciación Nanopore generados en el curso
@@ -32,9 +32,9 @@ Dorado v0.9.1 https://github.com/nanoporetech/dorado
 FastQC v0.12.1 http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
    - **Descripción:** FastQC es una herramienta de control de calidad para datos de secuenciación de alto rendimiento. Proporciona un informe detallado que ayuda a identificar posibles problemas en los datos brutos antes del análisis posterior.
 
-Guppy v6.5.7 https://community.nanoporetech.com/downloads/
-   - **Descripción:** Guppy es un software desarrollado por Oxford Nanopore Technologies para la llamada de bases (basecalling) de las señales eléctricas generadas por sus secuenciadores de ADN. También incluye funcionalidades para el multiplexado y el filtrado de reads.
-
+Minimap2 v2.28 https://github.com/lh3/minimap2
+   - **Descripción:** Minimap2 es un alineador de secuencias versátil y de alta velocidad diseñado para lecturas largas (Nanopore y PacBio).
+     
 MultiQC v1.28.0 https://multiqc.info
    - **Descripción:** MultiQC es una herramienta que agrega informes de control de calidad de múltiples herramientas de análisis bioinformático en un único informe HTML interactivo. Es compatible con una amplia gama de herramientas, incluyendo FastQC, NanoPlot, PycoQC y Trim Galore!, facilitando la revisión y comparación de los resultados de control de calidad de múltiples muestras.
    - 
@@ -55,6 +55,9 @@ TrimGalore v0.6.10 https://github.com/FelixKrueger/TrimGalore
 
 Trimmomatic v0.39 http://www.usadellab.org/cms/?page=trimmomatic
    - **Descripción:** Trimmomatic es una herramienta flexible y rápida para realizar el recorte de adaptadores y el filtrado de calidad en datos de secuenciación de Illumina. Permite eliminar secuencias de adaptadores, bases de baja calidad y reads demasiado cortos.
+
+YACRD v0.6.2 https://github.com/natir/yacrd
+   - **Descripción:** YACRD (Yet Another Chimeric Read Detector) es una herramienta especializada en la detección de lecturas quiméricas y regiones sin cobertura en datos de secuenciación de lecturas largas. Permite "limpiar" (scrubb) o dividir las lecturas donde se detectan uniones accidentales, mejorando significativamente la contigüidad y precisión de los ensamblajes genómicos posteriores.
 
 ## Metodología:
 
@@ -204,48 +207,7 @@ fastqc -t 2 *.trim.fastq.gz -o .
 multiqc -o trimming_trimmomatic .
 ```
 
-## 4. Basecalling de los archivos POD5 y FAST5 de Nanopore
-
-### Basecalling de FAST5
-
-```bash
-cd ~/genomics
-
-mkdir basecalling
-
-cd basecalling
-
-guppy_basecaller -i /data/2025_1/database/nanopore/fast5 -s fast5_db_sup -c dna_r10.4_e8.1_sup.cfg -x 'cuda:0'
-```
-
-> **Comentario:** 
-> - `-i /data/2025_1/database/nanopore/fast5`: Esta opción especifica el directorio de entrada donde se encuentran los archivos de datos de secuenciación crudos (en formato FAST5). Guppy leerá todos los archivos FAST5 dentro de este directorio.
-> - `-s fast5_db_sup`: Esto define el directorio de salida donde se guardarán los datos después del basecalling. En este caso, se creará un directorio llamado fast5_db_sup en tu directorio de trabajo actual para almacenar los archivos de salida (típicamente archivos FASTQ).
-> - `-c dna_r10.4_e8.1_sup.cfg`: Esta opción especifica el archivo de configuración que se utilizará para el "basecalling". El archivo dna_r10.4_e8.1_sup.cfg contiene ajustes optimizados para la celda de flujo R10.4 y el modelo de "basecalling" "sup" . Este modelo es conocido por su mayor exactitud en la identificación de las bases.
-> - `-x 'cuda:0'`: Esta opción habilita la aceleración por GPU para el proceso de basecalling, lo que puede acelerar significativamente la computación. 'cuda:0' especifica que deseas utilizar la primera GPU habilitada para CUDA (índice 0) disponible en tu sistema.
-
-```bash
-ls
-
-fail  guppy_basecaller_log-2025-04-22_21-21-01.log  pass  sequencing_summary.txt  sequencing_telemetry.js
-```
-
-```bash
-head -n 5 pass/fastq_runid_bcf4b7732185c1a3353d1b4fe80266cd3ac60162_0_0.fastq
-
-@a2662a87-b1ee-4491-a847-763bcf84bb77 runid=bcf4b7732185c1a3353d1b4fe80266cd3ac60162 sampleid=no_sample read=7221 ch=100 start_time=2024-04-28T00:01:51Z model_version_id=2021-11-17_dna_r10.4_minion_promethion_1024_67af0493
-TTATGTTCATTCTACTTGGTTCAGTTACGTATTGCTAAGGTTAAAACAAGTCTGTTGGGACCCATAGACAGCACCTGTTTGGTTCACTACGCTATCGAGACAATCTCTAATTGTGTTTTGATCATTATAAACCGGAATAGCTACAGTAAATATCATCTTTTTTCTCCTTAATTATTGTTTCCTATATAAAAACAAGTCCAGAATTATTCGAATCCAATTTTAAAAGTTACCATAATTTCTTTCTTTATAAATATGGGTTAAAAATTTTAATGTGTTTTTAAACCTAGCCACCGTAATCTAGATAATAAGATGGAATATTCCAGTAATTAAATTGGATTTTCCATAAGATCCCTAACAAATGCTTTGATTCATTTCTCTTTGAATTTGGAAAGCTCGCTTCATTTAATCCTAATTACGATACTTTGCGGATTTTTAATTTACCCATAAAAAAACACCTCTAAGTCGTTTTCAGGTATGATACCTGCTTTTCAACTTAAAGGTGCTTCTCCTCACTACAGGCCCAGACTCTCAAAAACTTCAACTTTTTATAACTTACTCTTTTCCGGCAGCGGCTTCCGCCTGTCCGTCTTTTAATTGATCATTGATTCTGGCGTCTTTCAAATACTCAGTCTTGAATCCGCTCTTCAGCGCCCACGCATAGAAGGCAAGGGCAACGATTGCGATCAGCCCCATATCCCAGCCGTACGGAATGATGTTCAGACCGCCGAATTTTCACTTTCCGAGCCATGAAATGACCATCATGCTGAGCAGATAGACAACCATCCAGACGCCGCCTTTAAAGTTTCTGCGGAATCCTTTCCACTTCGCTTTCGCTTGGTAGTAGAAATAAATCGGCAGGCCGATCAAAATGATAAACAGCACCTGCCCTGTTAACGGCCAGCGCGCCCAATACAGCACGAGAGACGCGAATACGAAGCCGAGCGGTGCAACCACGCTGAGGCCTTTCAGACGGAGAGGCCGGTACAAATCCGCCGCCGTCCGCCGCAGCGTCATCACCGTCACGGGTACCAGTAATAAGAAATCAGCGTCGCAACGGAAATGACTTCAGCAAGCACGCCCCATCCTCTGAATAAAAACAGAAAGATAAACGATACGATCAGGTTGAAAATCATCGCTTGGCGCGGCACGCCGTACAGCGGATGAAGCTTTCCGAAAATGCTCGGCATATATTTATTTTTTTCCATGCCGTAAATCATGCGTGACGTCGTAGCGGTATAAGTGATACCCGTTCCTGACGGAGAAACGAACGCGTCCGCATAAAGAATAATGACAAGCCAGTTGATATTCAATGCGATCGCCAAATCGGCAAATGGAGAGTTGAAGTTCAGGTGACTCCAGCCGTGAACGATCATGGAAGGTTCAACCGCACCGATAAATGCGATTTGCAATAGGACGTAAATGACGGTTGCGACCAGCAGCGAACCGACAACCGCAATCGGAATCGATTTGCCGGGATTTTTTGCTTCTCCGGCCATGTTAATGGTTTGAAACCCGTTAAACGCAAATACGATACCCCGATGTAGCCACCACCGT
-+
-#$$%%&&&&''()*-.2(((()0/..*)%%%&&')*++++,-66:;;-,,,/2))(&'()-//./88889ACDDCEFFHHFHHFHEDCBC00000D@@ABCKL{MJMJJKR{NLMONKJJN{NIK{JK;;:98:::EIIOMHGKJMO{PMLQ{SKJLMKDJFQIEBCBHK{KLKKQJKKJOM{LHMKFIIHQTJJK{LJGEIIJJMJGB>@@@BIIEDDHB>><11--((.344@AAC===<0573*=HNJHGNGHGGJFEFDE>8>=?EFGJIGJJJJHFJGCBACBGGGGGHKI{DEC43333475333467::=?A)**))*3<LLJOMOMHHKILNDTEDHHNQQNGEB?@?AHJH{>>>>>FNEBAAAD@PJFMJ@FIHHKMMRLPPGHE0////>===HHMHFGHJOMLHGGEFGHIMIR{LGDEIMK@@>?E>=?3/1777BFGLJDB@87A==?JKEEDEGCBAABIGLGKGKMJN{NKMNPHCBCCCII{MI60..,/0016))***.....===?AA?@==>>?VJ{ROFIHPJLLHHGGL=DIFFFGFIMEBDAC@9<<;::::9;;?CEEGDD;;@99:?:DDBECE;9983111*+(&&%%%%%)%&+9:HEGEC>>?@IKFKJ{MMKKJIKGBB?=6/,,E>>>?>ILMSJLHEGBEDCHH?===>F22222224?BABIJB?>9CGGLJIGOGGHG<<<<<C..333<,,,*),,.4:81226622BAA@BHHDEGIFDHBBDDHFEEGHGGFHMMGIFGGF?=>=@IGGFHJKA?<;;<==@BEFECD@?@@@BDBCCFGDDGDB>>>BBDFFD:66<=BAA@==>>=>>?EBBBCCIFGEEDEDEBBACCBACDEFFIIHFCBAAAC65556ACCABCFJFHGFEFFDDEC@A@ACBC@@>9:1/ECGGFDCDD?<;;;?@<2***),--.8889?A=>=>;:::988/()00.0/0>@ABB76666?JCIGGFFDFFFEEECCCBICDDCBCDFDHH@>>=<@ABEFAB454-+*)(+-/224==>CBBCCDED=<<<>>>A?=;*****:CA<<<::;?@AB@DFBBAAAFFFIFEDKFC@BACDFF:7854444:DCDFMCEGGCEFDIJAMRIKEEFABBHHJHNJIHHFFGDEGFFFIJ{OIMILGKF:;78;;?BD@@22222<FGECDD@=>>>>HLHA77ABBAA>>@AB@?:9::;HEBB?>>::<:;;3*('''')))/23--?=<=<@B?AAA>76533667E>>>>>CDCFFFHILGEEDCDDDFHGILHJIEEFGEH;9:::>988888861/,+,--+1113ECCDBAAAADFIHIHIH=;;;<A?:::HGE????=@@@BFJFLFJIGD:999:AA@@ADDGGFHIFA@@@@FFFEEDEDDCCCCCCEDFIFDABB>8888=@CBEFF+***+DGF@@@?@D?@@@BHFFGECDBAHILG;;;:;>>?ACB87777B?<<<=>BC6;.++&&&&&&%&*)1;:9<<ACC....---;0/0..//6+<<<BBBCB?>>*))))
-@b54d96bc-40da-4cad-91d1-1f53b75ae40b runid=bcf4b7732185c1a3353d1b4fe80266cd3ac60162 sampleid=no_sample read=10540 ch=101 start_time=2024-04-27T23:58:25Z model_version_id=2021-11-17_dna_r10.4_minion_promethion_1024_67af0493
-TTCTTTTTATGTATTCTACTCGTTCAGTTACGTATTGCTAAGGTTAAAACGAGTCTCTGGGACCCATAGACAGCACCTCTCTAAAGGGGGATATAGCCATGGGCAGAACAAAACTGGGAAACAGAAATGCTCAGAACGACAATGCCAAAAAGAAAAACGGCTTCGGACAGAAATTTGATTCTTATGCGGCCGTGAAGCTGAAAAGCTGATAGCAAGCAATAAAAGACACGGTGAGTAACGTGACGGCAGCATCTTCCAAATGGGGGGATGCTGTTTTTACCGCCTTCTTTGGTAAAATAGGAACATTGAATAAAAAGGAGTTTCGATATATCAATAATAAATTACTGCTCGTTGACGGCATGGCGCTTTTGTTCCACTAGTTTTTCGCGACGGCCGTTCATCGCAATTTTATGATAAATGAAAACGGAATTCCCACAAACGGCGTCAACGGTTTTTTAAAGCATCTTATTACGGCGGTTGATACGTTTTCAGCCCACACATGTCGTCTGCTGCTGGGATATGGGAAGCAAAACGTACCGCAATGATTTGTTTCAAGATTATAAGGCCAACAAAG
-+
-$$$%&&%&'&&'%$$$$&()('(*+.---++,,,99:;<IKNRLLMJLOB@>>>?@@8))*68:<-;77777667;;FBB??ABCE@DA?;::://////7777?EFFDDDIOJIFHGKLSTCEFGGGG550//044...+-,+-.*'''1;ACCERLBA@@@>;8668CDEHJCEDCCGCAB@@;6))+8;>>??DCCBBHHIIGFEDDBCCAAACDHIECCIP[HCCCBABCCDKHDCCFDGBCCCBEDD?>:557<956>BCFKNDDCC@9,+655>BFHKKMGDGEAHFHIILHFCDEDFFIKAAAA99840=:I@?@?:<<<<A@B,,,,,BA:<:8A=;;9320002<CB;667;?ACDD@<721225400133312?>=??;;;:;::933***((01DGHJQONGJMLLIIJKRQJFHEFGJGEFGEGCDDC@AA@ADBBCCBDFIJ{{KJKHGHH;;;;;MHEEFEEIIIMPHCE==<;8/;988;<E@96GFHJHGFGFFFCDCDCC?@BDC@3/.21100DB87777778HHRVKIJIGEDDFFGGJICEGFEDDE-,,++.+
-@d10de390-43fc-48d6-83f9-c865ddf92885 runid=bcf4b7732185c1a3353d1b4fe80266cd3ac60162 sampleid=no_sample read=12796 ch=392 start_time=2024-04-27T23:59:17Z model_version_id=2021-11-17_dna_r10.4_minion_promethion_1024_67af0493
-TTATGTAACCTACTTCGTTCAGTTACGTATTGCTAAGGTTAAAACGAGTCTCTTGGGACCCATAGACAGCACCTTGTCAGAAAAAGTCATCAGTGTGATAAAGAGACGTTCTCAAGCCGCATGACTGATGTGAAAAGCTCGATTGCAAAGTCCATGCTGAATATGGACCCGCCGAAACATACCCAAATCAGATCTGCCGTCAATCGCGCTTTCACTCCCCGCGTCTTGAAGAAATGGGAGCCGAGAATTAAAGACATTACCGATCATCTTCTGGAACGAGCAAGGACAAAGAGCAAGTGATATGGTCCGAAGTACTTCTCCCTTTGCCGGTGGTGGTGATTTCAGAATTATTAGGCGTTCCGTCCGAACGTATGGATCAGTTTAAAAAATGGTCGGATATTCTCGTCAGCATGCCGAAAGATGCGAGTCCTGAAGCGGCGGAGAAAAATCAGCAGGAACGTGACCAATGT
-```
-
-### Basecalling de POD5
+## 4. Basecalling de los archivos POD5 de Nanopore
 
 #### Basecalling
 
@@ -284,10 +246,10 @@ seqkit stats -a -j 4 *_sorted.fastq > stats_sorted_fastq.txt
 > **Comentario:** 
 > - `samtools sort -n`: Ordena los archivos BAM por nombre de lectura.
 > - `bedtools bamtofastq`: Convierte los archivos BAM ordenados a formato FASTQ.
-> - `seqkit stats`: Calcula las estadísticas de archivos FASTQ que han sido previamente ordenados.
+> - `seqkit stats`: Calcula las estadísticas de archivos FASTQ que han sido previamente ordenados (-a: todas las estadísticas y -j: número de hilos).
 
 ```bash
-cat stats_sorted_fastq.txt | head
+cat stats_sorted_fastq.txt
 
 file                    format  type  num_seqs    sum_len  min_len  avg_len  max_len   Q1   Q2       Q3  sum_gap    N50  N50_num  Q20(%)  Q30(%)  AvgQual  GC(%)  sum_n
 b15_calls_sorted.fastq  FASTQ   DNA      8,056  9,351,266       26  1,160.8   26,983  555  814  1,298.5        0  1,423      721   89.24   80.11    19.24   45.7      0
@@ -327,13 +289,43 @@ mkdir nanopore
 
 cd nanopore
 
-NanoPlot -t 2 --fastq ~/genomics/basecalling/pod5_db_sup/b15.fastq.gz -p b15_sup_db_ -o b15_sup_db --maxlength 1000000
+NanoPlot -t 2 --fastq ~/genomics/basecalling/pod5_db_sup/b15.fastq.gz -p b15_sup_raw_ -o b15_sup_raw --maxlength 1000000 --only-report
+
+cat b15_sup_raw/b15_sup_raw_NanoStats.txt
+
+General summary:         
+Mean read length:              1,160.8
+Mean read quality:                18.9
+Median read length:              814.0
+Median read quality:              20.3
+Number of reads:               8,056.0
+Read length N50:               1,423.0
+STDEV read length:             1,257.0
+Total bases:               9,351,266.0
+Number, percentage and megabases of reads above quality cutoffs
+>Q10:   8054 (100.0%) 9.4Mb
+>Q15:   7484 (92.9%) 8.9Mb
+>Q20:   4292 (53.3%) 5.4Mb
+>Q25:   1024 (12.7%) 1.0Mb
+>Q30:   162 (2.0%) 0.1Mb
+Top 5 highest mean basecall quality scores and their read lengths
+1:      43.1 (332)
+2:      43.1 (332)
+3:      41.9 (351)
+4:      41.9 (351)
+5:      41.3 (371)
+Top 5 longest reads and their mean basecall quality score
+1:      26983 (18.4)
+2:      26983 (18.4)
+3:      20990 (26.5)
+4:      20990 (26.5)
+5:      14663 (23.3)
 ```
 
 > **Comentario:** 
 > - `--fastq /home/ins_user/genomics/raw_data/nanopore/b01_fast.fastq`: Indica la ruta del archivo FASTQ que contiene las lecturas de secuenciación de ONT que se van a analizar.
-> - `-p b15_sup_db_`: Define el prefijo que se usará para los nombres de los archivos de salida. En este caso, todos los gráficos generados comenzarán con "b15_sup_db_".
-> - `-o b15_sup_db`: Especifica el directorio de salida donde se guardarán los gráficos. Si el directorio no existe, NanoPlot lo creará.
+> - `-p b15_sup_raw_`: Define el prefijo que se usará para los nombres de los archivos de salida. En este caso, todos los gráficos generados comenzarán con "b15_sup_raw_".
+> - `-o b15_sup_raw`: Especifica el directorio de salida donde se guardarán los gráficos. Si el directorio no existe, NanoPlot lo creará.
 > - `--maxlength 1000000`: Establece la longitud máxima que se mostrará en los gráficos. Las lecturas que superen esta longitud serán truncadas en las visualizaciones. Esto ayuda a enfocar el análisis en la mayoría de las lecturas y evita que las lecturas extremadamente largas distorsionen la visualización.
 
 ## 6.	Limpieza de los archivos FASTQ de Nanopore
@@ -347,35 +339,59 @@ mkdir nanopore
 
 cd nanopore
 
-porechop -t 2 -i ~/genomics/basecalling/pod5_db_sup/b15.fastq.gz -o b15_sup_porechop.fastq.gz
+porechop -t 10 -i ~/genomics/basecalling/pod5_db_sup/b15.fastq.gz -o b15_sup_porechop.fastq.gz > b15_porechop.log 2> b15_porechop.err
 ```
 
 > **Comentario:** 
 > - `-i ~/genomics/basecalling/pod5_db_sup/b15.fastq.gz`: Esta opción indica la ruta del archivo FASTQ de entrada. Este es el archivo que contiene las lecturas de secuenciación de ONT que se van a procesar.
 > - `-o b15_sup_porechop.fastq.gz`: Esta opción especifica el nombre del archivo FASTQ de salida comprimido con gzip. Este archivo contendrá las lecturas después de que Porechop haya recortado los adaptadores y separado las lecturas concatenadas.
 
-### Eliminación de lecturas considerando su calidad y longitud
+### Eliminación de quimeras
 
 ```bash
-gunzip -c ~/genomics/trimming/nanopore/b15_sup_porechop.fastq.gz | NanoFilt -q 10 --length 1000 | gzip > b15_sup_nanofilt.fastq.gz
+cd ~/genomics/trimming/
+
+minimap2 -x ava-ont -g 500 -t 10 b15_sup_porechop.fastq.gz b15_sup_porechop.fastq.gz > b15_overlap.paf
+
+yacrd -i b15_overlap.paf -o b15_report.yacrd -c 4 -n 0.4 scrubb -i b15_sup_porechop.fastq.gz -o b15_yacrd.fastq.gz
 ```
 
 > **Comentario:** 
-> - `gunzip -c ~/genomics/trimming/nanopore/b15_sup_porechop.fastq.gz`: Descomprime el archivo "b15_sup_porechop.fastq.gz".
+> - `minimap2 -x ava-ont`: Utiliza el algoritmo Minimap2 con el preajuste (preset) para solapamientos de lecturas largas de Nanopore.
+> - `-g 500`: Establece la distancia máxima para el llenado de brechas (gaps) entre semillas en 500 bases. Es una configuración recomendada para mejorar la sensibilidad en datos R10.
+> - `-t 10`: Indica que el servidor utilizará 10 hilos (CPUs) para procesar el alineamiento de forma paralela y rápida.
+> - `b15_sup_porechop.fastq.gz b15_sup_porechop.fastq.gz`: ERealiza un mapeo de tipo "all-vs-all", comparando cada lectura contra todas las demás de la misma muestra para encontrar solapamientos consistentes.
+> - `> b15_overlap.paf`: Redirige los resultados al archivo "b15_overlap.paf" en formato PAF (Pairwise Alignment Format).
+> - `yacrd -i b15_overlap.paf`: Carga el archivo de solapamientos generado anteriormente como entrada para el detector de quimeras.
+> - `-o b15_report.yacrd`: Crea un archivo de reporte con la clasificación de cada lectura (Chimeric, NotCovered o NotBad).
+> - `-c 4`: Define el umbral de cobertura mínima. Las regiones con menos de 4 lecturas de soporte se consideran potencialmente "malas" o quiméricas.
+> - `-n 0.4`: Exige que al menos el 40% de la lectura esté cubierta por otros solapamientos; de lo contrario, se marca como no cubierta.
+> - `scrubb`: Modo de operación que limpia la secuencia. En lugar de borrar la lectura completa si es quimérica, yacrd la corta en los puntos de unión falsos y conserva las partes reales.
+> - `-i b15_sup_porechop.fastq.gz`: Indica el archivo FASTQ original que contiene las secuencias físicas que serán procesadas y cortadas.
+> - `-o b15_yacrd.fastq.gz`: Genera el archivo final limpio y comprimido, listo para ser utilizado en el ensamblaje de genomas.
+
+### Eliminación de lecturas considerando su calidad y longitud
+
+```bash
+gunzip -c ~/genomics/trimming/nanopore/b15_yacrd.fastq.gz | NanoFilt -q 10 --length 1000 | gzip > b15_sup_nanofilt.fastq.gz
+```
+
+> **Comentario:** 
+> - `gunzip -c ~/genomics/trimming/nanopore/b15_yacrd.fastq.gz`: Descomprime el archivo "b15_yacrd.fastq.gz".
 > - `NanoFilt -q 10 --length 1000`: Filtra las lecturas descomprimidas utilizando NanoFilt, manteniendo solo aquellas que tengan un puntaje de calidad mínimo de 10 y una longitud mínima de 1000 bases.
 > - `gzip > b15_sup_nanofilt.fastq.gz`: Comprime las lecturas filtradas y las guarda en un nuevo archivo llamado "b15_sup_nanofilt.fastq.gz".
 > - `|`: Este símbolo es una "tubería" (pipe) que conecta la salida de un comando a la entrada de otro.
 
 ```bash
-cd ~/genomics/quality/nanopore
+seqkit rename -n b15_sup_nanofilt.fastq.gz -o b15_rename.fastq.gz
 
-NanoPlot -t 2 --fastq ~/genomics/trimming/nanopore/b15_sup_nanofilt.fastq.gz -p b15_sup_filt_ -o b15_sup_filt --maxlength 100000
+seqkit stats -a -j 10 *.fastq.gz > b15_stats_fastq.txt
 ```
 
 ## 7.	Análisis de calidad y limpieza de los datos de secuenciación Nanopore generados en el curso
 
 ```bash
-tree /data/2025_2/genomics/fastq
+tree /data/2026_1/genomics/
 ```
 
 
